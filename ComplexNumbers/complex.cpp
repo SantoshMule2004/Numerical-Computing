@@ -3,7 +3,14 @@ using namespace std;
 
 Complex::Complex()
 {
-    cout << "constructor method" << endl;
+    this->real = 0.0;
+    this->imag = 0.0;
+}
+
+Complex::Complex(double real, double imag)
+{
+    this->real = real;
+    this->imag = imag;
 }
 
 double Complex::getReal() const

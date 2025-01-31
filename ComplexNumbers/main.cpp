@@ -16,4 +16,6 @@ int main()
     Complex c = a.multiplyComplexNum(b);
 
     cout << c.getReal() << " + " << c.getImag() << "i" << endl;
+
+    return 0;
 }
