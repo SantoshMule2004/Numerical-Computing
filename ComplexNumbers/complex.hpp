@@ -9,10 +9,11 @@ private:
 
 public:
     Complex();
-    double getReal();
+    double getReal() const;
     void setReal(double r);
-    double getImag();
+    double getImag() const;
     void setImag(double i);
-    Complex Complex::addComplexNum(Complex b);
-    Complex Complex::substractComplexNum(Complex b);
+    Complex addComplexNum(Complex b);
+    Complex substractComplexNum(Complex b);
+    Complex multiplyComplexNum(Complex b);
 };

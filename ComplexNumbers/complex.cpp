@@ -6,7 +6,7 @@ Complex::Complex()
     cout << "constructor method" << endl;
 }
 
-double Complex::getReal()
+double Complex::getReal() const
 {
     return this->real;
 }
@@ -15,7 +15,7 @@ void Complex::setReal(double r)
     this->real = r;
 }
 
-double Complex::getImag()
+double Complex::getImag() const
 {
     return this->imag;
 }
@@ -38,4 +38,12 @@ Complex Complex::substractComplexNum(Complex b)
     a.real = this->real - b.real;
     a.imag = this->imag - b.imag;
     return a;
+}
+
+Complex Complex::multiplyComplexNum(Complex b)
+{
+    Complex c;
+    c.real = (this->real * b.getReal()) - (this->imag * b.getImag());
+    c.imag = (this->real * b.getImag()) + (this->imag * b.getReal());
+    return c;
 }
