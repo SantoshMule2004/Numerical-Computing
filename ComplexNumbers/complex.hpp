@@ -1,4 +1,5 @@
 #include <iostream>
+#include<cmath>
 
 class Complex
 {
@@ -9,11 +10,18 @@ private:
 public:
     Complex();
     Complex(double real, double imag);
+
     double getReal() const;
     void setReal(double r);
     double getImag() const;
     void setImag(double i);
-    Complex addComplexNum(Complex b);
-    Complex substractComplexNum(Complex b);
-    Complex multiplyComplexNum(Complex b);
+    void displayComplexNumber() const;
+
+    Complex operator=(Complex& c);
+    Complex operator+(Complex& c) const;
+    Complex operator-(Complex& c) const;
+    Complex operator*(Complex& c) const;
+    Complex operator/(Complex& c) const;
+
+    double normOfComplex() const;
 };
