@@ -1,0 +1,124 @@
+// Root();
+    // Root(double t);
+    // double getT() const; 
+    // void setT(double t);
+    // double evaluatePolynomial(double x);
+    // void bracketingInterval(double &a, double &b);
+    // void BisectionMethod();
+    // double evaluatePolynomialDerivative(double x);
+    // void NewtonRaphson(double a);
+    // void FixedPointMethod(double x);
+
+    Root()
+    {
+        t = 0.0;
+    }
+
+    Root(double t)
+    {
+        this->t = t;
+    }
+
+    double getT() const
+    {
+        return t;
+    }
+
+    void setT(double t)
+    {
+        this->t = t;
+    }
+
+    double evaluatePolynomial(double x)
+    {
+        return (4 * x * x * x - 3 * x);
+        // return (x * x - 5 * x + 5);
+        // return (x*x + 5)/5;
+        // return (2 * x * x - 1);
+    }
+
+    void bracketingInterval(double &a, double &b)
+    {
+        int i, j;
+        int flag = 0;
+        for (i = -10; i < 10; i++)
+        {
+            for (j = i + 1; j < 10; j++)
+            {
+                if (evaluatePolynomial(i) * evaluatePolynomial(j) < 0)
+                {
+                    a = i;
+                    b = j;
+                    flag = 1;
+                    break;
+                }
+            }
+            if (flag == 1)
+                break;
+        }
+    }
+
+    void BisectionMethod()
+    {
+        double a, b;
+        bracketingInterval(a, b);
+
+        if (evaluatePolynomial(a) * evaluatePolynomial(b) >= 0)
+            std::cout << "wrong interval..!" << std::endl;
+        double x;
+
+        std::cout << "| a |" << " b |" << " f(a) |" << " f(b) |" << " x |" << " f(x) |" << std::endl;
+        while (std::abs(b - a) >= t)
+        {
+            x = (a + b) / 2;
+
+            std::cout << std::fixed << std::setprecision(4) << "| " << a << " | " << b << " | " << evaluatePolynomial(a) << " | " << evaluatePolynomial(b) << " | " << x << " | " << evaluatePolynomial(x) << std::endl;
+
+            if (evaluatePolynomial(x) == 0.00)
+                break;
+
+            else if (evaluatePolynomial(x) * evaluatePolynomial(a) < 0)
+                b = x;
+            else
+                a = x;
+        }
+    }
+
+    double evaluatePolynomialDerivative(double x)
+    {
+        // return (4 * x * x * x - 3 * x);
+        // return (12 * x * x - 3);
+        return 2 * x - 5;
+    }
+
+    void NewtonRaphson(double a)
+    {
+        std::cout << "| x |" << " f(x) |" << " f'(x) |" << std::endl;
+        
+        double x = evaluatePolynomial(a) / evaluatePolynomialDerivative(a);
+
+        std::cout << std::fixed << std::setprecision(4) << a << " | " << evaluatePolynomial(a) << " | " << evaluatePolynomialDerivative(a) << std::endl;
+
+        while (std::abs(x) >= t)
+        {
+            x = evaluatePolynomial(a) / evaluatePolynomialDerivative(a);
+            a = a - x;
+
+            std::cout << std::fixed << std::setprecision(4) << a << " | " << evaluatePolynomial(a) << " | " << evaluatePolynomialDerivative(a) << std::endl;
+        }
+    }
+
+    void FixedPointMethod(double x)
+    {
+        std::cout << "| x |" << " f(x) |" << std::endl;
+
+        double fx = evaluatePolynomial(x);
+        std::cout << std::fixed << std::setprecision(4) << x << " | " << fx << std::endl;
+
+        while (std::abs(fx - x) >= t)
+        {
+            x = fx;
+            fx = evaluatePolynomial(x);
+            std::cout << std::fixed << std::setprecision(4) << x << " | " << fx << std::endl;
+        }
+    }

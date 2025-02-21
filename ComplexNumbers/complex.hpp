@@ -24,4 +24,11 @@ public:
     Complex operator/(Complex& c) const;
 
     double normOfComplex() const;
+
+    // Complex complexConjugate(){
+    //     Complex a;
+    //     a.real = this->real;
+    //     a.imag = -(this->imag);
+    //     return a;
+    // }
 };
