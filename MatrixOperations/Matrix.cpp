@@ -1,28 +1,25 @@
 #include "Matrix.hpp"
 using namespace std;
 
+//default constructor
 Matrix::Matrix()
 {
     this->rows = 0;
     this->cols = 0;
 }
 
+// constructor to read single file
 Matrix::Matrix(string filename)
 {
     ifstream file;
     file.open(filename);
 
-    if(!file)
+    if (!file)
         cerr << "Error opening file" << endl;
 
     file >> this->rows >> this->cols;
 
-    this->mat = new long double *[rows];
-    int i;
-    for (i = 0; i < rows; i++)
-    {
-        this->mat[i] = new long double[cols];
-    }
+    allocateMemory(rows, cols);
 
     for (int i = 0; i < rows; i++)
     {
@@ -33,27 +30,49 @@ Matrix::Matrix(string filename)
     }
 }
 
+// constructor to read two file
+Matrix::Matrix(string filename, string filename2)
+{
+    ifstream file, file2;
+    file.open(filename);
+    file2.open(filename2);
+
+    if (!file && !file2)
+        cerr << "Error opening file" << endl;
+
+    file >> this->rows >> this->cols;
+
+    allocateMemory(rows, cols);
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            if (j == cols - 1)         // reading last column from file2
+                file2 >> mat[i][j];
+            else
+                file >> mat[i][j];
+        }
+    }
+    file.close();
+    file2.close();
+}
+
+// constructor to allocate memory for a matrix
 Matrix::Matrix(int r, int c)
 {
     rows = r;
     cols = c;
-
-    mat = new long double *[rows];
-    int i;
-    for (i = 0; i < rows; i++)
-    {
-        mat[i] = new long double[cols]();
-    }
+    allocateMemory(rows, cols);
 }
 
+// copy constructor
 Matrix::Matrix(const Matrix &M)
 {
     rows = M.rows;
     cols = M.cols;
 
-    mat = new long double *[rows];
-    for (int i = 0; i < rows; i++)
-        mat[i] = new long double[cols];
+    allocateMemory(rows, cols);
 
     for (int i = 0; i < rows; i++)
     {
@@ -64,6 +83,21 @@ Matrix::Matrix(const Matrix &M)
     }
 }
 
+// function to allocate memory to a matrix
+void Matrix::allocateMemory(int r, int c)
+{
+    this->mat = new long double *[r];
+    for (int i = 0; i < r; i++)
+    {
+        this->mat[i] = new long double[c];
+        for (int j = 0; j < c; j++)
+        {
+            mat[i][j] = 0;
+        }
+    }
+}
+
+// getters
 int Matrix::getRows() const
 {
     return rows;
@@ -74,22 +108,51 @@ int Matrix::getCols() const
     return cols;
 }
 
-void Matrix::display() const
+// function to display matrix
+void Matrix::display()
 {
     for (int i = 0; i < rows; i++)
     {
         for (int j = 0; j < cols; j++)
         {
-            cout << mat[i][j] << " ";
+            cout << fixed << setprecision(2) << mat[i][j] << " ";
         }
         cout << endl;
     }
 }
 
+// overloading = operator
+Matrix Matrix::operator=(const Matrix &M)
+{
+    if (this == &M)
+        return *this;
+
+    for (int i = 0; i < rows; ++i)
+    {
+        delete[] mat[i];
+    }
+    delete[] mat;
+
+    rows = M.rows;
+    cols = M.cols;
+    allocateMemory(rows, cols);
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            mat[i][j] = M.mat[i][j];
+        }
+    }
+    return *this;
+}
+
+// overloading + operator
 Matrix Matrix::operator+(const Matrix &M)
 {
-    if(this->rows != M.rows && this->cols != M.cols){
-        cout << "Addition not possible" << endl;
+    if (this->rows != M.rows || this->cols != M.cols)
+    {
+        throw runtime_error("Addition not possible");
     }
 
     Matrix a(rows, cols);
@@ -104,10 +167,12 @@ Matrix Matrix::operator+(const Matrix &M)
     return a;
 }
 
+// function to add matrices
 Matrix Matrix::addMatrix(const Matrix &M)
 {
-    if(this->rows != M.rows && this->cols != M.cols){
-        cout << "Addition not possible" << endl;
+    if (this->rows != M.rows || this->cols != M.cols)
+    {
+        throw runtime_error("Addition not possible");
     }
 
     Matrix a(rows, cols);
@@ -122,10 +187,12 @@ Matrix Matrix::addMatrix(const Matrix &M)
     return a;
 }
 
+// overloading - operator
 Matrix Matrix::operator-(const Matrix &M)
 {
-    if(this->rows != M.rows && this->cols != M.cols){
-        cout << "Addition not possible" << endl;
+    if (this->rows != M.rows || this->cols != M.cols)
+    {
+        throw runtime_error("Substraction not possible");
     }
 
     Matrix a(rows, cols);
@@ -140,10 +207,12 @@ Matrix Matrix::operator-(const Matrix &M)
     return a;
 }
 
+// function to substract matrices
 Matrix Matrix::subMatrix(const Matrix &M)
 {
-    if(this->rows != M.rows && this->cols != M.cols){
-        cout << "Addition not possible" << endl;
+    if (this->rows != M.rows || this->cols != M.cols)
+    {
+        throw runtime_error("Substraction not possible");
     }
 
     Matrix a(rows, cols);
@@ -158,31 +227,34 @@ Matrix Matrix::subMatrix(const Matrix &M)
     return a;
 }
 
+// function to multiply matrices
 Matrix Matrix::multiplyMatrix(const Matrix &M)
 {
-    if(cols != M.rows)
-        cout << "Multiplication not possible" << endl;
+    if (cols != M.rows)
+    {
+        throw runtime_error("Multiplication not possible");
+    }
 
-        Matrix a(rows, M.cols);
+    Matrix a(rows, M.cols);
 
-        int i, j ,k;
-        for(i=0; i<rows; i++)
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < M.cols; j++)
         {
-            for(j=0; j<M.cols; j++)
+            for (int k = 0; k < M.rows; k++)
             {
-                for(k=0; k<M.rows; k++)
-                {
-                    a.mat[i][j] += mat[i][k] * M.mat[k][j]; 
-                }
+                a.mat[i][j] += mat[i][k] * M.mat[k][j];
             }
         }
+    }
 
-        return a;
+    return a;
 }
 
+// function to check if a matrix is identity or not
 bool Matrix::isIdentity() const
 {
-    if(rows != cols)
+    if (rows != (cols - 1))
         return false;
 
     for (int i = 0; i < rows; i++)
@@ -190,7 +262,7 @@ bool Matrix::isIdentity() const
         if (mat[i][i] != 1)
             return false;
 
-        for (int j = 0; j < cols; j++)
+        for (int j = 0; j < (cols - 1); j++)
         {
             if (i != j)
             {
@@ -202,14 +274,15 @@ bool Matrix::isIdentity() const
     return true;
 }
 
+// function to check if a matrix is symmetric or not
 bool Matrix::isSymmetric() const
 {
-    if(rows != cols)
+    if (rows != cols - 1)
         return false;
 
     for (int i = 0; i < rows; i++)
     {
-        for (int j = 0; j < cols; j++)
+        for (int j = 0; j < rows; j++)
         {
             if (i != j)
             {
@@ -221,17 +294,24 @@ bool Matrix::isSymmetric() const
     return true;
 }
 
-std::ifstream &operator>>(std::ifstream &fin, Matrix &M)
+// function to check if a matrix is diagonally dominant or not
+bool Matrix::isDiagonallyDominant() const
 {
-    for (int i = 0; i < M.rows; i++)
+    for (int i = 0; i < rows; i++)
     {
-        for (int j = 0; j < M.cols; j++)
+        double rSum(0);
+        for (int j = 0; j < (cols - 1); j++)
         {
-            fin >> M.mat[i][j];
+            if (i != j)
+                rSum += abs(mat[i][j]);
         }
+        if (abs(mat[i][i]) < rSum)
+            return false;
     }
+    return true;
 }
 
+// destructor
 Matrix::~Matrix()
 {
     for (int i = 0; i < rows; i++)
@@ -239,4 +319,44 @@ Matrix::~Matrix()
         delete[] mat[i];
     }
     delete[] mat;
+}
+
+// run function
+void Matrix::Run()
+{
+    //  // cholesky decomposition
+    //  Matrix ans4 = choleskyDecomposition();
+    //  cout << endl
+    //       << "values using cholesky:" << endl;
+    //  ans4.display();
+
+     // doolittle decomposition
+     Matrix ans1 = doolittleDecomposition();
+     cout << endl
+          << "values using Doolottle:" << endl;
+     ans1.display();
+
+     // crouts decomposition
+     Matrix ans2 = croutsDecomposition();
+     cout << endl
+          << "values using crouts:" << endl;
+     ans2.display();
+
+     // gauss elimination
+     Matrix ans3 = gaussElimination();
+     cout << endl
+          << "values using gauss elimination:" << endl;
+     ans3.display();
+
+     // gauss jacobi
+     Matrix ans5 = gaussJacobi();
+     cout << endl
+          << "values using gauss jacobi:" << endl;
+     ans5.display();
+
+     // gauss seidel
+     Matrix ans6 = gaussSeidel();
+     cout << endl
+          << "values using gauss seidel:" << endl;
+     ans6.display();
 }

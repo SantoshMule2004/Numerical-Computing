@@ -1,6 +1,10 @@
-#include <iostream>
-#include <fstream>
-#include <string>
+#include<iostream>
+#include<fstream>
+#include<string>
+#include<iomanip>
+#include<math.h>
+#include <cmath>
+#define TOI 0.001
 
 class Matrix
 {
@@ -11,12 +15,15 @@ private:
 public:
     Matrix();
     Matrix(std::string);
+    Matrix(std::string, std::string);
     Matrix(int, int);
     Matrix(const Matrix&);
     
     int getRows() const;
     int getCols() const;
-    void display() const;
+    void display();
+
+    void allocateMemory(int, int);
 
     Matrix operator+(const Matrix &);
     Matrix addMatrix(const Matrix &);
@@ -24,11 +31,32 @@ public:
     Matrix operator-(const Matrix &);
     Matrix subMatrix(const Matrix &);
 
+    Matrix operator=(const Matrix &);
+
     Matrix multiplyMatrix(const Matrix &);
+
+    void upperTriangular();
+    void swapRows(long double **, int, int);
+    Matrix backSubstitution();
+    Matrix backSubstitution(Matrix&);
+    Matrix forwardSubstitution();
+    Matrix forwardSubstitution(Matrix&);
+
+    Matrix gaussElimination();
+
+    Matrix gaussJacobi();
+
+    Matrix gaussSeidel();
+
+    Matrix croutsDecomposition();
+    Matrix doolittleDecomposition();
+    Matrix choleskyDecomposition();
 
     bool isIdentity() const;
     bool isSymmetric() const;
-    ~Matrix();
+    bool isDiagonallyDominant() const;
 
-    friend std::ifstream& operator>>(std::ifstream& fin, Matrix& M);
+    void Run();
+    
+    ~Matrix();
 };
