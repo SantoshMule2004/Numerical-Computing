@@ -32,7 +32,7 @@ double Root::BisectionMethod(double m, double n, double (*fx)(double))
     double x;
 
     // std::cout << "| a |" << " b |" << " f(a) |" << " f(b) |" << " x |" << " f(x) |" << std::endl;
-    while (std::abs(b - a) >= t)
+    while (abs(b - a) >= t)
     {
         x = (a + b) / 2;
 

@@ -4,9 +4,8 @@ using namespace std;
 // LU decomposition using cholesky algorithm
 Matrix Matrix::choleskyDecomposition()
 {
-    if(rows != (cols-1)){
+    if(rows != (cols-1))
         throw runtime_error("matrix is not augumented matrix");
-    }
 
     if(!isSymmetric())
         throw runtime_error("Matrix is not symmetric");
@@ -38,19 +37,9 @@ Matrix Matrix::choleskyDecomposition()
     for(int i=0;i<rows;i++)
     {
         for(int j=0;j<cols-1;j++)
-        {
             lt.mat[i][j] = l.mat[j][i];   // adding values to transpose matrix
-        }
     }
 
     cout << "cholesky decomposition :" << endl;
-
-    Matrix X = l.forwardSubstitution();   // performing forward substitution on lower traingular matrix values
-
-    for (int i = 0; i < rows; i++)
-        lt.mat[i][cols - 1] = X.mat[0][i];   // adding forward substituted values to transpose of lower triangular matrix
-
-    Matrix ans = lt.backSubstitution();   // performing back substitution on upper traingular matrix values
-
-    return ans;
+    return calculateAnsForLU(l,lt);
 }

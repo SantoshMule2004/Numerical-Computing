@@ -7,29 +7,25 @@ void Matrix::upperTriangular()
     for (int i = 0; i < rows; i++)
     {
         if (!mat[i][i])
-            swapRows(mat, i, rows - 1);  // if diagonal element is zero swap row 
+            swapRows(i, rows - 1);  // if diagonal element is zero swap row 
 
         double p = mat[i][i];  //storing pivot value (diagonal entry)
         mat[i][i] = 1;  // making diagonal as 1
 
         for (int j = i + 1; j < cols; j++)
-        {
             mat[i][j] /= p;   // multiplying every element of row by pivot 
-        }
 
         for (int k = i + 1; k < rows; k++)
         {
             double e = mat[k][i];
             for (int l = i; l < cols; l++) 
-            {
                 mat[k][l] -= e * mat[i][l];   // substracting pivot from all column entries below diagonal element to make them zero
-            }
         }
     }
 }
 
 // function to swap rows of a matrix
-void Matrix::swapRows(long double **mat, int i, int j)
+void Matrix::swapRows(int i, int j)
 {
     for (int k = 0; k <= rows; k++)
     {

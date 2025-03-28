@@ -3,7 +3,8 @@ using namespace std;
 
 int main()
 {
-     Matrix a("textFiles/mat2l.txt", "textFiles/mat2r.txt");
+     Matrix a("textFiles/s.txt", "textFiles/r.txt");
+     // Matrix a("textFiles/c.txt");
      a.Run();
      return 0;
 }
