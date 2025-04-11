@@ -5,7 +5,7 @@ int main()
 {
     Interpolation I("a.txt");
     // I.lagrangesPolynomiyal(2);
-    double rms = I.LeastSquareLineFit();
-    cout << "RMS error : " << rms << endl;
+    // Polynomial P = I.LeastSquareLineFit();
+    Polynomial P = I.LeastSquareExponentialFit();
     return 0;
 }

@@ -13,17 +13,36 @@ Polynomial::Polynomial(vector<double> p)
 
 void Polynomial::display()
 {
-    for(int i=0; i<p.size();i++)
+    int xPower = p.size() - 1;;
+    for(int i=(p.size() - 1); i>=0; i--)
     {
-        cout << p[i] << " + " ;
+        cout << p[i] << "x^" << xPower << " + " ;
+        xPower--;
     }
 }
 
-double Polynomial::evaluatePolynomial(int x)
+double Polynomial::evaluatePolynomial(double x)
 {
-    double sum(0)
-    for(int i=0;i<p.size();i++)
-    {
+    double result(0);
+    double xPower = 1;
 
+    for(double coef : p) {
+        result += coef * xPower;
+        xPower *= x;
     }
+    return result;
+}
+
+double Polynomial::evaluateExpoPolynomial(double x)
+{
+    double result(0);
+    result += (p[0]) * (exp(p[1] * x));
+    return result;
+}
+
+double Polynomial::evaluatePowerPolynomial(double x)
+{
+    double result(0);
+    result += (p[0]) * (pow(x, p[1]));
+    return result;
 }

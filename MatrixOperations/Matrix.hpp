@@ -1,6 +1,7 @@
 #include<iostream>
 #include<fstream>
 #include<string>
+#include<vector>
 #include<iomanip>
 #include<math.h>
 #include <cmath>
@@ -19,9 +20,16 @@ public:
     Matrix(std::string, std::string);
     Matrix(int, int);
     Matrix(const Matrix&);
+    Matrix(int, int, const std::vector<std::vector<long double>>&);
     
     int getRows() const;
+    void setRow(int);
+
     int getCols() const;
+    void setCol(int);
+
+    double getElement(int, int);
+
     void display();
 
     void allocateMemory(int, int);

@@ -1,5 +1,6 @@
 #include<iostream>
 #include<vector>
+#include<cmath>
 
 class Polynomial
 {
@@ -13,5 +14,7 @@ public:
     Polynomial getPolynomial();
     void setPolynomial();
 
-    double evaluatePolynomial(int);
+    double evaluatePolynomial(double);
+    double evaluateExpoPolynomial(double);
+    double evaluatePowerPolynomial(double);
 };

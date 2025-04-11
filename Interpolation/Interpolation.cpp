@@ -29,7 +29,7 @@ Interpolation::Interpolation(string filename)
     file.close();
 }
 
-Interpolation::Interpolation(std::vector<int> &X, std::vector<int> &F, int n)
+Interpolation::Interpolation(std::vector<double> &X, std::vector<double> &F, int n)
 {
     this->X = X;
     this->F = F;
@@ -37,29 +37,29 @@ Interpolation::Interpolation(std::vector<int> &X, std::vector<int> &F, int n)
 }
 
 // getters
-vector<int> Interpolation::getX()
+vector<double> Interpolation::getX()
 {
     return X;
 }
 
-vector<int> Interpolation::getF()
+vector<double> Interpolation::getF()
 {
     return F;
 }
 
 // setters
-void Interpolation::setX(std::vector<int> &X)
+void Interpolation::setX(std::vector<double> &X)
 {
     this->X = X;
 }
 
-void Interpolation::setF(std::vector<int> &F)
+void Interpolation::setF(std::vector<double> &F)
 {
     this->F = F;
 }
 
 // fuction to display
-void Interpolation::display(std::vector<int>& A)
+void Interpolation::display(std::vector<double>& A)
 {
     for (int i = 0; i < X.size(); i++)
     {

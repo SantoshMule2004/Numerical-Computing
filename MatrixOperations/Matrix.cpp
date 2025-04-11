@@ -71,6 +71,22 @@ Matrix::Matrix(const Matrix &M)
 {
     copyMatrix(M);
 }
+  
+// copy matrix from a vector
+Matrix::Matrix(int row, int col, const vector<vector<long double>> &M)
+{
+    this->rows = row;
+    this->cols = col;
+    allocateMemory(row, col);
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            this->mat[i][j] = M[i][j];
+        }
+    }
+}
 
 // function to allocate memory to a matrix
 void Matrix::allocateMemory(int r, int c)
@@ -105,9 +121,24 @@ int Matrix::getRows() const
     return rows;
 }
 
+void Matrix::setRow(int row)
+{
+    this->rows = row;
+}
+
 int Matrix::getCols() const
 {
     return cols;
+}
+
+void Matrix::setCol(int col)
+{
+    this->cols = col;
+}
+
+double Matrix::getElement(int row, int col)
+{
+    return mat[row][col];
 }
 
 // function to display matrix
@@ -318,9 +349,9 @@ bool Matrix::makeDiagonallyDominant()
         {
             double maxValue = mat[i][i];
             int maxRow = i;
-            for (int j = i+1; j < rows; j++)
+            for (int j = i + 1; j < rows; j++)
             {
-                if(abs(mat[j][i]) >= maxValue)
+                if (abs(mat[j][i]) >= maxValue)
                 {
                     maxValue = mat[j][i];
                     maxRow = j;
@@ -330,7 +361,7 @@ bool Matrix::makeDiagonallyDominant()
         }
     }
 
-    if(isDiagonallyDominant())
+    if (isDiagonallyDominant())
         return true;
     else
         return false;
